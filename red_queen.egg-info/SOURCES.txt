@@ -1,0 +1,12 @@
+LICENSE
+MANIFEST.in
+README.md
+requirements.txt
+setup.py
+red_queen/VERSION.txt
+red_queen.egg-info/PKG-INFO
+red_queen.egg-info/SOURCES.txt
+red_queen.egg-info/dependency_links.txt
+red_queen.egg-info/not-zip-safe
+red_queen.egg-info/requires.txt
+red_queen.egg-info/top_level.txt

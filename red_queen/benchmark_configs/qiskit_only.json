@@ -1,0 +1,39 @@
+{
+    "optimization_levels": {
+        "optimization_levels": {
+            "args": [
+                0, 1, 2, 3
+            ]
+        }
+    },
+    "compiler": {
+        "compiler": {
+            "args" : [
+                "qiskit"
+            ]
+        }
+        
+    },
+    "version": {
+        "version": {
+            "args" : [
+                "0.45.0"
+            ]
+        }
+        
+    },
+    "targets": {
+        "ibm_washington": {
+            "args": [
+                "FakeWashingtonV2"
+            ]
+        }
+    },
+    "num_runs": {
+        "num_runs": {
+            "args": [
+                1
+            ]
+        }
+    }
+}

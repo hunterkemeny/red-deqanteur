@@ -1,0 +1,56 @@
+{
+    "passes": {
+        "tket": {
+            "entry_point": "deqanteur.passes.pytket:PytketPassManager",
+            "kwargs": {
+                "optimization_level": 2
+            }
+        },
+        "qiskit": {
+            "entry_point": "qiskit.transpiler.preset_passmanagers:generate_preset_pass_manager",
+            "kwargs": {
+                "optimization_level": 3,
+                "basis_gates": [
+                    "cx",
+                    "u3"
+                ]
+            }
+        },
+        "rustiq": {
+            "entry_point": "qiskit.transpiler.preset_passmanagers:generate_preset_pass_manager",
+            "kwargs": {
+                "optimization_level": 3,
+                "routing_method": "rustiq",
+                "basis_gates": [
+                    "cx",
+                    "u3"
+                ]
+            }
+        }
+    },
+    "inputs": {
+        "qasm_set_1": {
+            "entry_point": "deqanteur.inputs:load_qasm_circuits",
+            "args": [
+                "./circs",
+                100
+            ]
+        }
+    },
+    "metrics": {
+        "entangling_depth": {
+            "entry_point": "deqanteur.metrics:entangling_depth"
+        },
+        "entangling_count": {
+            "entry_point": "deqanteur.metrics:entangling_count"
+        }
+    },
+    "targets": {
+        "ibm_whasington": {
+            "entry_point": "deqanteur.targets.default:target_from_backend_str",
+            "args": [
+                "FakeWashingtonV2"
+            ]
+        }
+    }
+}
