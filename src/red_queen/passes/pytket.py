@@ -7,7 +7,7 @@ from pytket.qasm import circuit_from_qasm_str
 from pytket.qasm import circuit_to_qasm_str
 
 from qiskit.circuit import QuantumCircuit
-
+from qiskit.qasm2 import dumps as qasm_dumps
 from .external import ExternalPassManager
 
 
@@ -25,30 +25,7 @@ class PytketPassManager(ExternalPassManager):
         averaged_node_gate_errors = {}
         averaged_edge_gate_errors = {}
         averaged_readout_errors = {}
-        # averaged_readout_errors = {
-        #     Node(x[0]): qiskit_target["measure"][x].error
-        #     for x in qiskit_target["measure"]
-        # }
-        # for qarg in qiskit_target.qargs:
-        #     ops = [
-        #         x
-        #         for x in qiskit_target.operation_names_for_qargs(qarg)
-        #         if x not in {"if_else", "measure", "delay"}
-        #     ]
-        #     errors = [
-        #         qiskit_target[op][qarg].error
-        #         for op in ops
-        #         if qiskit_target[op][qarg].error is not None
-        #     ]
-        #     if errors:
-        #         avg = statistics.mean(errors)
-        #     else:
-        #         avg = 0  # or some other default value
 
-        #     if len(qarg) == 1:
-        #         averaged_node_gate_errors[Node(qarg[0])] = avg
-        #     else:
-        #         averaged_edge_gate_errors[tuple(Node(x) for x in qarg)] = avg
         self._errors = (
             averaged_node_gate_errors,
             averaged_edge_gate_errors,
@@ -57,14 +34,14 @@ class PytketPassManager(ExternalPassManager):
         return Architecture(qiskit_target.build_coupling_map().graph.edge_list())
 
     def to_external_circuit(self, qiskit_circuit: QuantumCircuit):
-        return circuit_from_qasm_str(qiskit_circuit.qasm())
+        return circuit_from_qasm_str(qasm_dumps(qiskit_circuit))
 
     def from_external_circuit(self, external_circuit) -> QuantumCircuit:
         """
         Converts an external circuit back to a qiskit circuit
         """
         print(external_circuit)
-        return QuantumCircuit.from_qasm_str(circuit_to_qasm_str(external_circuit))
+        return QuantumCircuit.from_qasm_str(qasm_dumps(external_circuit))
 
     def run_external_transpilation(self, external_circuit, external_target):
         """Run the pass manager on an external circuit."""

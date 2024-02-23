@@ -4,13 +4,12 @@ This module contains the main benchmarking class `Benchmark`.
 
 import json
 import itertools
-import multiprocessing
 
 from qiskit.converters import dag_to_circuit, circuit_to_dag
 
-from loader import load_object
-from utils import rebuild_dict
-from runner import Runner
+from .runner import Runner
+from .inputs.default import gather_qasm_file_names
+
 
 class Benchmark:
     """
@@ -19,12 +18,11 @@ class Benchmark:
     and a list of metrics to record.
     """
 
-    def __init__(self, optimization_levels=None, version=None, compiler=None, targets=None, num_runs=None):
-        self.optimization_levels = optimization_levels
-        self.version = version
-        self.compiler = compiler
+    def __init__(self, inputs=None, passes=None, metrics=None, targets=None):
+        self.inputs = inputs
+        self.passes = passes
+        self.metrics = metrics
         self.targets = targets
-        self.num_runs = num_runs
 
     @staticmethod
     def from_file(fname):
@@ -32,29 +30,16 @@ class Benchmark:
         with open(fname, "r") as fin:
             return Benchmark(**json.loads(fin.read()))
 
-    def run(self):
+    def run(self, nprocesses=1):
         """
         Runs the full benchmark
         """
+        # flattening the inputs
+        all_inputs = []
+        for dirname in self.inputs:
+            all_inputs.extend(gather_qasm_file_names(dirname))
+        iterator = itertools.product(self.passes.items(), self.targets.items())
 
-        optimization_levels = self.optimization_levels["optimization_levels"]['args']
-
-        version = self.version["version"]['args'][0]
-        compiler = self.compiler["compiler"]['args'][0]
-        #expand to more targets later
-        target = self.targets["ibm_washington"]['args'][0]
-        num_runs = self.num_runs["num_runs"]['args'][0]
-
-        for opt_level in optimization_levels:
-            # here we want to run from red-queen
-            runner = Runner(
-                {
-                    "compiler": compiler,
-                    "version": version,
-                    "optimization_level": opt_level,
-                },
-                str(target),  #backend
-                int(num_runs), #num runs
-            )
+        for tpass, target in iterator:
+            runner = Runner(tpass, target, all_inputs)
             runner.run_benchmarks()
-            

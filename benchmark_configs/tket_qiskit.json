@@ -1,7 +1,7 @@
 {
     "passes": {
         "tket": {
-            "entry_point": "deqanteur.passes.pytket:PytketPassManager",
+            "entry_point": "red_queen.passes.pytket:PytketPassManager",
             "kwargs": {
                 "optimization_level": 2
             }
@@ -28,26 +28,20 @@
             }
         }
     },
-    "inputs": {
-        "qasm_set_1": {
-            "entry_point": "deqanteur.inputs:load_qasm_circuits",
-            "args": [
-                "./circs",
-                100
-            ]
-        }
-    },
+    "inputs": [
+        "./src/red_queen/circs"
+    ],
     "metrics": {
         "entangling_depth": {
-            "entry_point": "deqanteur.metrics:entangling_depth"
+            "entry_point": "red_queen.metrics:entangling_depth"
         },
         "entangling_count": {
-            "entry_point": "deqanteur.metrics:entangling_count"
+            "entry_point": "red_queen.metrics:entangling_count"
         }
     },
     "targets": {
         "ibm_whasington": {
-            "entry_point": "deqanteur.targets.default:target_from_backend_str",
+            "entry_point": "red_queen.targets.default:target_from_backend_str",
             "args": [
                 "FakeWashingtonV2"
             ]

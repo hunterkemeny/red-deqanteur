@@ -7,7 +7,7 @@
 
 import os
 import sys
-from setuptools import setup, find_packages
+from setuptools import setup
 
 with open("requirements.txt") as f:
     REQUIREMENTS = f.read().splitlines()
@@ -52,7 +52,7 @@ setup(
         "Topic :: Scientific/Engineering",
     ],
     keywords="qiskit sdk quantum",
-    packages=find_packages(exclude=["test*"]),
+    package_dir={"": "src"},
     install_requires=REQUIREMENTS,
     include_package_data=True,
     python_requires=">=3.7",
