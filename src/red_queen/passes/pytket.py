@@ -40,8 +40,7 @@ class PytketPassManager(ExternalPassManager):
         """
         Converts an external circuit back to a qiskit circuit
         """
-        print(external_circuit)
-        return QuantumCircuit.from_qasm_str(qasm_dumps(external_circuit))
+        return QuantumCircuit.from_qasm_str(circuit_to_qasm_str(external_circuit))
 
     def run_external_transpilation(self, external_circuit, external_target):
         """Run the pass manager on an external circuit."""

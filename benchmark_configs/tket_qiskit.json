@@ -1,35 +1,24 @@
 {
     "passes": {
-        "tket": {
+        "pytket_o2": {
             "entry_point": "red_queen.passes.pytket:PytketPassManager",
             "kwargs": {
                 "optimization_level": 2
             }
         },
-        "qiskit": {
+        "qiskit_o3": {
             "entry_point": "qiskit.transpiler.preset_passmanagers:generate_preset_pass_manager",
             "kwargs": {
                 "optimization_level": 3,
                 "basis_gates": [
                     "cx",
-                    "u3"
-                ]
-            }
-        },
-        "rustiq": {
-            "entry_point": "qiskit.transpiler.preset_passmanagers:generate_preset_pass_manager",
-            "kwargs": {
-                "optimization_level": 3,
-                "routing_method": "rustiq",
-                "basis_gates": [
-                    "cx",
-                    "u3"
+                    "u"
                 ]
             }
         }
     },
     "inputs": [
-        "./src/red_queen/circs"
+        "./qasm/simple"
     ],
     "metrics": {
         "entangling_depth": {

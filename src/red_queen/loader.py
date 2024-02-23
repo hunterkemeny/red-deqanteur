@@ -1,4 +1,7 @@
 import importlib
+import logging
+
+_LOGGER = logging.getLogger("red_queen.loader")
 
 
 def _load_entry_point(entity_string):
@@ -11,7 +14,7 @@ def load_object(dictionary, **kwargs):
     """
     Loads a python object decribed from a json dictionary
     """
-    print(f"Loading python object: {dictionary}{kwargs if kwargs else ''}")
+    _LOGGER.info("Loading python object: %s", str(dictionary))
     fun = _load_entry_point(dictionary["entry_point"])
     args = dictionary.get("args", [])
     kwargs.update(dictionary.get("kwargs", {}))
